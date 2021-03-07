@@ -1,0 +1,4 @@
+{
+  "gitdoc.enabled": true,
+  "gitdoc.autoPush": "afterDelay"
+}
