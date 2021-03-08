@@ -87,6 +87,11 @@ const itemToQuads = (item: Item) => {
         DF.namedNode("http://www.w3.org/2001/XMLSchema#dateTime")
       )
     ),
+    DF.quad(
+      subject,
+      DF.namedNode("ex://date-modified-timestamp"),
+      DF.literal(item.dateModified.getTime())
+    ),
     // Link to author
     DF.quad(
       subject,
