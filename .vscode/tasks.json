@@ -43,6 +43,17 @@
       "problemMatcher": [],
       "label": "npm: clear-and-generate",
       "detail": "yarn cleardb && yarn generatedata"
+    },
+    {
+      "type": "npm",
+      "script": "run-query",
+      "problemMatcher": [],
+      "label": "npm: run-query",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "yarn ts-node src/query-list"
     }
   ]
 }

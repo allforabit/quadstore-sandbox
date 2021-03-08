@@ -27,10 +27,8 @@ const runQuery = async () => {
               <ex://date-modified> ?dateModified;
               <ex://text> ?text;
               <ex://name> ?name.
-          OPTIONAL {
-            ?id <ex://author> ?author_id.
-            ?author_id <ex://name> ?author_name.
-          }
+          ?id <ex://author> ?author_id.
+          ?author_id <ex://name> ?author_name.
         }
         ORDER BY DESC(?dateModified)
         LIMIT 100
