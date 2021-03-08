@@ -22,6 +22,27 @@
       "problemMatcher": [],
       "label": "npm: watch",
       "detail": "tsc -w"
+    },
+    {
+      "type": "npm",
+      "script": "cleardb",
+      "problemMatcher": [],
+      "label": "npm: cleardb",
+      "detail": "yarn rimraf \"db/*\""
+    },
+    {
+      "type": "npm",
+      "script": "generatedata",
+      "problemMatcher": [],
+      "label": "npm: generatedata",
+      "detail": "yarn ts-node src/generate-data.ts"
+    },
+    {
+      "type": "npm",
+      "script": "clear-and-generate",
+      "problemMatcher": [],
+      "label": "npm: clear-and-generate",
+      "detail": "yarn cleardb && yarn generatedata"
     }
   ]
 }
