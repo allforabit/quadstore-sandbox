@@ -4,7 +4,7 @@ import { DataFactory as DF } from "n3";
 import { Quadstore } from "quadstore";
 import { setupDb } from "./setup-db";
 
-const ITEM_COUNT = 10000;
+const ITEM_COUNT = 1000;
 
 const titleCase = (str: string) => {
   return str
