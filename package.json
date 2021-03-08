@@ -27,12 +27,14 @@
     "@types/faker": "^5.1.7",
     "@types/leveldown": "^4.0.2",
     "@types/n3": "^1.4.4",
+    "@types/table": "^6.0.0",
     "cross-env": "^7.0.3",
     "faker": "^5.4.0",
     "leveldown": "^5.6.0",
     "n3": "^1.8.1",
     "quadstore": "^8.0.0",
     "quadstore-comunica": "^0.3.1",
-    "sparqljson-to-tree": "^2.1.0"
+    "sparqljson-to-tree": "^2.1.0",
+    "table": "^6.0.7"
   }
 }

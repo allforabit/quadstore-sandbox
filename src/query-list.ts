@@ -1,6 +1,7 @@
 import { BindingArrayResult } from "quadstore";
 import { setupDb } from "./setup-db";
 import { bindingsToTree, time } from "./utils";
+import { table } from "table";
 
 const schema = {
   singularizeVariables: {
@@ -15,26 +16,57 @@ const schema = {
   },
 };
 
-const runQuery = async () => {
-  const db = await setupDb();
-  await db.open();
-
-  const res = (await db.sparql(
-    `
+const queries = {
+  withOptional: `
         SELECT ?id ?text ?dateModified ?name ?author_id ?author_name
         WHERE {
           ?id <ex://type> <ex://type/Item>;
               <ex://date-modified> ?dateModified;
               <ex://text> ?text;
               <ex://name> ?name.
-          ?id <ex://author> ?author_id.
-          ?author_id <ex://name> ?author_name.
+          OPTIONAL {
+            ?id <ex://author> ?author_id.
+            ?author_id <ex://name> ?author_name.
+          }
         }
         ORDER BY DESC(?dateModified)
         LIMIT 100
         OFFSET 0
-    `
-  )) as BindingArrayResult;
+    `,
+  withoutOptional: `
+    SELECT ?id ?text ?dateModified ?name ?author_id ?author_name
+    WHERE {
+      ?id <ex://type> <ex://type/Item>;
+          <ex://date-modified> ?dateModified;
+          <ex://text> ?text;
+          <ex://name> ?name.
+      ?id <ex://author> ?author_id.
+      ?author_id <ex://name> ?author_name.
+    }
+    ORDER BY DESC(?dateModified)
+    LIMIT 100
+    OFFSET 0
+  `,
+  unorderedNoDate: `
+    SELECT ?id ?text ?name ?author_id ?author_name
+    WHERE {
+      ?id <ex://type> <ex://type/Item>;
+          <ex://text> ?text;
+          <ex://name> ?name.
+      ?id <ex://author> ?author_id.
+      ?author_id <ex://name> ?author_name.
+    }
+    ORDER BY DESC(?dateModified)
+    LIMIT 100
+    OFFSET 0
+  `,
+};
+
+const createQueryRunner = (query: string) => async () => {
+  const db = await setupDb();
+  await db.open();
+
+  const res = (await db.sparql(query)) as BindingArrayResult;
 
   await db.close();
 
@@ -44,8 +76,22 @@ const runQuery = async () => {
 };
 
 const run = async () => {
-  const res = await time(runQuery);
-  console.log(`Time: ${res.time}`);
+  const withOptional = await time(createQueryRunner(queries.withOptional));
+  const withoutOptional = await time(
+    createQueryRunner(queries.withoutOptional)
+  );
+  const unorderedNoDate = await time(
+    createQueryRunner(queries.unorderedNoDate)
+  );
+
+  console.log(
+    table([
+      ["With optional", withOptional.time],
+      ["Without optional", withoutOptional.time],
+      ["Unordered and no date", unorderedNoDate.time],
+    ])
+  );
+  // console.log(`Time: ${res.time}`);
 };
 
 run().catch((e) => {
