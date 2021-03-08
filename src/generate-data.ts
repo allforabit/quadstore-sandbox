@@ -6,21 +6,6 @@ import { setupDb } from "./setup-db";
 
 const ITEM_COUNT = 10000;
 
-// const getData = async (path = "") => {
-//   // Default options are marked with *
-//   const response = await fetch(`${BASE_URL}/${path}`, {
-//     method: "GET", // *GET, POST, PUT, DELETE, etc.
-//     // mode: 'cors', // no-cors, *cors, same-origin
-//     // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-//     // credentials: 'same-origin', // include, *same-origin, omit
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//   });
-//   // TODO should the status be included here?
-//   return response.json(); // parses JSON response into native JavaScript objects
-// };
-
 const titleCase = (str: string) => {
   return str
     .toLowerCase()

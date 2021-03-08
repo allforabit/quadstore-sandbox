@@ -1,7 +1,7 @@
 import { BindingArrayResult } from "quadstore";
-import { setupDb } from "./setup-db";
-import { bindingsToTree, time } from "./utils";
 import { table } from "table";
+import { setupDb } from "./setup-db";
+import { time } from "./utils";
 
 const schema = {
   singularizeVariables: {
@@ -18,20 +18,20 @@ const schema = {
 
 const queries = {
   withOptional: `
-        SELECT ?id ?text ?dateModified ?name ?author_id ?author_name
-        WHERE {
-          ?id <ex://type> <ex://type/Item>;
-              <ex://date-modified> ?dateModified;
-              <ex://text> ?text;
-              <ex://name> ?name.
-          OPTIONAL {
-            ?id <ex://author> ?author_id.
-            ?author_id <ex://name> ?author_name.
-          }
-        }
-        ORDER BY DESC(?dateModified)
-        LIMIT 100
-        OFFSET 0
+    SELECT ?id ?text ?dateModified ?name ?author_id ?author_name
+    WHERE {
+      ?id <ex://type> <ex://type/Item>;
+          <ex://date-modified> ?dateModified;
+          <ex://text> ?text;
+          <ex://name> ?name.
+      OPTIONAL {
+        ?id <ex://author> ?author_id.
+        ?author_id <ex://name> ?author_name.
+      }
+    }
+    ORDER BY DESC(?dateModified)
+    LIMIT 100
+    OFFSET 0
     `,
   withoutOptional: `
     SELECT ?id ?text ?dateModified ?name ?author_id ?author_name
@@ -118,7 +118,6 @@ const run = async () => {
     const count = await time(createQueryRunner(queries.count));
     // @ts-ignore
     console.log(`Count: ${count.value[0]["?s"].value}`);
-    // console.log(dateTimestamp.time);
 
     console.log(
       table([
