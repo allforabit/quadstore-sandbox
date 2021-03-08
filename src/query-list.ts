@@ -51,6 +51,19 @@ const queries = {
     SELECT ?id ?text ?name
     WHERE {
       ?id <ex://type> <ex://type/Item>;
+          <ex://date-modified> ?dateModified;
+          <ex://text> ?text;
+          <ex://name> ?name.
+    }
+    ORDER BY DESC(?dateModified)
+    LIMIT 100
+    OFFSET 0
+  `,
+  noAuthorOrderedByTimestamp: `
+    SELECT ?id ?text ?name
+    WHERE {
+      ?id <ex://type> <ex://type/Item>;
+          <ex://date-modified-timestamp> ?dateModified;
           <ex://text> ?text;
           <ex://name> ?name.
     }
