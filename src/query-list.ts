@@ -56,6 +56,8 @@ const queries = {
       ?id <ex://author> ?author_id.
       ?author_id <ex://name> ?author_name.
     }
+    LIMIT 100
+    OFFSET 0
   `,
   noAuthor: `
     SELECT ?id ?text ?name
@@ -80,6 +82,15 @@ const queries = {
         ?author_id <ex://name> ?author_name.
       }
     }
+    ORDER BY ?name
+    LIMIT 100
+    OFFSET 0
+  `,
+  count: `
+  SELECT (COUNT(?s) AS ?s)
+  WHERE {
+    ?s ?p ?o
+  }
   `,
 };
 
@@ -88,8 +99,7 @@ const createQueryRunner = (query: string) => async () => {
   await db.open();
   const res = (await db.sparql(query)) as BindingArrayResult;
   await db.close();
-  const parsed = bindingsToTree(res.items, schema);
-  return parsed;
+  return res.items;
 };
 
 const run = async () => {
@@ -102,11 +112,11 @@ const run = async () => {
     //   createQueryRunner(queries.unorderedNoDate)
     // );
     // const noAuthor = await time(createQueryRunner(queries.noAuthor));
-    const dateTimestamp = await time(createQueryRunner(queries.dateTimestamp));
-    console.log(dateTimestamp.value.length);
-    console.log(dateTimestamp.time);
-
-    return dateTimestamp;
+    // const dateTimestamp = await time(createQueryRunner(queries.dateTimestamp));
+    const count = await time(createQueryRunner(queries.count));
+    // @ts-ignore
+    console.log(`Count: ${count.value[0]["?s"].value}`);
+    // console.log(dateTimestamp.time);
 
     // console.log(
     //   table([
