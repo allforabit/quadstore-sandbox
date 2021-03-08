@@ -126,6 +126,9 @@ const run = async () => {
       createQueryRunner(queries.withoutOptional)
     );
     const noAuthor = await time(createQueryRunner(queries.noAuthor));
+    const noAuthorOrderedByTimestamp = await time(
+      createQueryRunner(queries.noAuthorOrderedByTimestamp)
+    );
     const dateTimestamp = await time(createQueryRunner(queries.dateTimestamp));
     const orderByName = await time(createQueryRunner(queries.orderByName));
     const count = await time(createQueryRunner(queries.count));
@@ -139,6 +142,10 @@ const run = async () => {
         ["Date timestamp", dateTimestamp.time],
         ["Order by name", orderByName.time],
         ["Simple (no linked author)", noAuthor.time],
+        [
+          "Simple, ordered by timestamp (no linked author)",
+          noAuthorOrderedByTimestamp.time,
+        ],
       ])
     );
   } catch (e) {
