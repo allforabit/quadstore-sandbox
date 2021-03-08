@@ -1,7 +1,7 @@
-import { repeatedly, sub } from "@thi.ng/transducers";
+import { repeatedly } from "@thi.ng/transducers";
 import faker from "faker";
-import { Quadstore } from "quadstore";
 import { DataFactory as DF } from "n3";
+import { Quadstore } from "quadstore";
 import { setupDb } from "./setup-db";
 
 const ITEM_COUNT = 10000;
