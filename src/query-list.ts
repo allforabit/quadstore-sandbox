@@ -56,6 +56,16 @@ const queries = {
       ?id <ex://author> ?author_id.
       ?author_id <ex://name> ?author_name.
     }
+    LIMIT 100
+    OFFSET 0
+  `,
+  noAuthor: `
+    SELECT ?id ?text ?name
+    WHERE {
+      ?id <ex://type> <ex://type/Item>;
+          <ex://text> ?text;
+          <ex://name> ?name.
+    }
     ORDER BY DESC(?dateModified)
     LIMIT 100
     OFFSET 0
@@ -83,12 +93,14 @@ const run = async () => {
   const unorderedNoDate = await time(
     createQueryRunner(queries.unorderedNoDate)
   );
+  const noAuthor = await time(createQueryRunner(queries.noAuthor));
 
   console.log(
     table([
       ["With optional", withOptional.time],
       ["Without optional", withoutOptional.time],
       ["Unordered and no date", unorderedNoDate.time],
+      ["Simple (no linked author)", noAuthor.time],
     ])
   );
   // console.log(`Time: ${res.time}`);
