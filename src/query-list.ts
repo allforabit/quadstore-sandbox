@@ -70,6 +70,22 @@ const queries = {
         ?author_id <ex://name> ?author_name.
       }
     }
+    ORDER BY ?dateModified
+    LIMIT 100
+    OFFSET 0
+  `,
+  orderByName: `
+    SELECT ?id ?text ?dateModified ?name ?author_id ?author_name
+    WHERE {
+      ?id <ex://type> <ex://type/Item>;
+          <ex://date-modified-timestamp> ?dateModified;
+          <ex://text> ?text;
+          <ex://name> ?name.
+      OPTIONAL {
+        ?id <ex://author> ?author_id.
+        ?author_id <ex://name> ?author_name.
+      }
+    }
     ORDER BY ?name
     LIMIT 100
     OFFSET 0
@@ -98,6 +114,7 @@ const run = async () => {
     );
     const noAuthor = await time(createQueryRunner(queries.noAuthor));
     const dateTimestamp = await time(createQueryRunner(queries.dateTimestamp));
+    const orderByName = await time(createQueryRunner(queries.orderByName));
     const count = await time(createQueryRunner(queries.count));
     // @ts-ignore
     console.log(`Count: ${count.value[0]["?s"].value}`);
@@ -108,6 +125,7 @@ const run = async () => {
         ["With optional", withOptional.time],
         ["Without optional", withoutOptional.time],
         ["Date timestamp", dateTimestamp.time],
+        ["Order by name", orderByName.time],
         ["Simple (no linked author)", noAuthor.time],
       ])
     );
